@@ -1,0 +1,114 @@
+.header {
+  text-align: center;
+  background-color: #8c55aa;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 120px 1fr 120px;
+  padding-top: 0px;
+  justify-content: center;
+  font-size: xx-large;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.logo {
+  padding-left: 20px;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.login-options {
+  font-size: medium;
+  display: inline-block;
+  height: 80px;
+  width: 100px;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.login-options:hover {
+  background-color: #a778c1;
+  color: #fff;
+  cursor: pointer;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 40px;
+  padding: 50px;
+  padding-bottom: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+.movie-card {
+  background-color: #696969;
+	text-align: center;
+	padding: 20px;
+	margin: 1rem;
+	box-shadow: 7px 10px 12px -5px rgba(0, 0, 0, 0.56);
+	border-radius: 10px;
+  transition: all ease 500ms;
+  color: #fff;
+}
+
+.movie-card img {
+  border-radius: 10px;
+}
+
+.movie-card:hover {
+	transform: scale(1.05);
+	opacity: 0.8;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.button-wrapper button {
+  margin: 10px;
+  width: 60px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #8c55aa;
+  color: #fff;
+  outline: none;
+  border: none;
+}
+
+.button-wrapper button:hover {
+  cursor: pointer;
+}
+
+.button-wrapper button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media only screen and (max-width: 960px)   {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 760)   {
+  .movie-card {
+    min-width: 250px;
+    padding: 0px;
+  }
+
+  .movie-card img {
+    width: 200px;
+    padding: 20px;
+  }
+}
