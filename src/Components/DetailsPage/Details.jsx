@@ -15,6 +15,8 @@ export default function Details() {
 
   const API_KEY = import.meta.env.VITE_API_KEY
 
+  console.log(import.meta.env)
+
   const {
     locale,
     logo,
