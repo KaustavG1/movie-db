@@ -1,3 +1,4 @@
+import Loader from "../Loader/Loader"
 import { API_KEY } from "../../../private/api_secret"
 import { arabicContent, englishContent } from "../../constants/locale"
 import { localeArabic } from "../../redux/localeSlice"
@@ -26,21 +27,34 @@ export default function Details() {
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
   const [config, setConfig] = useState({})
+  const [isLoading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
-  useEffect(() => {
+  const getConfigData = async () => {
+    setLoading(true)
     fetch(`https://api.themoviedb.org/3/configuration?api_key=${API_KEY}`)
       .then(res => res.json())
       .then(data => setConfig({baseURL: data?.images?.base_url, size: data?.images?.poster_sizes}))
       .catch(err => console.error(err))
-  }, [])
+      .finally(setLoading(false))
+  }
 
-  useEffect(() => {
+  const getMoviesData = () => {
+    setLoading(true)
     fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${lang}&page=${page}`)
       .then(res => res.json())
       .then(data => setMovies(data.results))
       .catch(err => console.error(err))
+      .finally(setLoading(false))
+  }
+
+  useEffect(() => {
+    getConfigData()
+  }, [])
+
+  useEffect(() => {
+    getMoviesData()
   }, [page, isArabic])
 
   const handlePrev = () => setPage(page => page - 1)
@@ -55,8 +69,10 @@ export default function Details() {
     dispatch(userLogin([]))
   }
 
+  console.log(isLoading)
+
   return (
-    <div>
+    <>
       <div className="header">
         <span className="login-options" onClick={handleTranslate}>
           {locale}
@@ -64,21 +80,29 @@ export default function Details() {
         <span className="logo">{logo}</span>
         <span className="login-options" onClick={handleLogout}>{logout}</span>
       </div>
-      <div className="container">
+      {isLoading ? <Loader /> : <div className="container">
         {movies.map(movie =>
           (<div className="movie-card" key={movie?.title}>
-            <img alt="Movie Poster" src={`${config?.baseURL}w342${movie?.poster_path}`} />
+            <div className="img-wrapper">
+              <img alt="Movie Poster" src={`${config?.baseURL}w342${movie?.poster_path}`} />
+            </div>
             <h3>{movie?.title}</h3>
           </div>))}
-      </div>
+      </div>}
       <div className="button-wrapper">
-        <button onClick={handlePrev} disabled={page - 1 === 0}>
+        <button
+          onClick={handlePrev}
+          disabled={(page - 1 === 0) || isLoading}
+        >
           {prevButton}
         </button>
-        <button onClick={handleNext}>
+        <button
+          onClick={handleNext}
+          disabled={isLoading}
+        >
           {nextButton}
         </button>
       </div>
-    </div>
+    </>
   )
 }

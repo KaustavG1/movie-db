@@ -62,7 +62,7 @@ export default function Login() {
     <div className="login-page">
       <div className="card">
         <h1 className="sign">{loginSign}</h1>
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleFormSubmit}>
           <input
             name="email"
             type="email"
@@ -80,10 +80,9 @@ export default function Login() {
             required
           />
           <button
-            type="button"
+            type="submit"
             className="login-button"
             disabled={!(isEmailValid && isPassValid)}
-            onClick={handleFormSubmit}
           >
             {loginButton}
           </button>
