@@ -70,8 +70,6 @@ export default function Details() {
     dispatch(userLogin([]))
   }
 
-  console.log(isLoading)
-
   return (
     <>
       <div className="header">
