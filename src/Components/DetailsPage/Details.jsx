@@ -1,5 +1,4 @@
 import Loader from "../Loader/Loader"
-import { API_KEY } from "../../../private/api_secret"
 import { arabicContent, englishContent } from "../../constants/locale"
 import { localeArabic } from "../../redux/localeSlice"
 import { useDispatch } from "react-redux"
@@ -13,6 +12,8 @@ export default function Details() {
   const isArabic = useSelector(state => state.locale)
   const lang = isArabic ? 'ar' : 'en-US'
   const pageContent = isArabic ? arabicContent : englishContent
+
+  const API_KEY = import.meta.env.VITE_API_KEY
 
   const {
     locale,
