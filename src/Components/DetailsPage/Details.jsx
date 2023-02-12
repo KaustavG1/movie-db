@@ -1,15 +1,27 @@
-import { useEffect, useState } from "react"
 import { API_KEY } from "../../../private/api_secret"
-import './Details.css'
+import { arabicContent, englishContent } from "../../constants/locale"
+import { localeArabic } from "../../redux/localeSlice"
+import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react"
+import { userLogin } from "../../redux/authSlice"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import "./Details.css"
 
-export default function Details({pageContent}) {
+export default function Details() {
+  const isArabic = useSelector(state => state.locale)
+  const lang = isArabic ? 'ar' : 'en-US'
+  const pageContent = isArabic ? arabicContent : englishContent
+
   const {
+    locale,
     logo,
     logout,
     prevButton,
     nextButton
   } = pageContent
+
+  const dispatch = useDispatch()
 
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
@@ -25,25 +37,30 @@ export default function Details({pageContent}) {
   }, [])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`)
+    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${lang}&page=${page}`)
       .then(res => res.json())
       .then(data => setMovies(data.results))
       .catch(err => console.error(err))
-  }, [page])
+  }, [page, isArabic])
 
   const handlePrev = () => setPage(page => page - 1)
   const handleNext = () => setPage(page => page + 1)
 
   const handleTranslate = () => {
-    // Change language state
-    // Save in local storage
+    dispatch(localeArabic())
   }
-  const handleLogout = () => navigate('/login')
+
+  const handleLogout = () => {
+    navigate('/login', {replace: true})
+    dispatch(userLogin([]))
+  }
 
   return (
     <div>
       <div className="header">
-        <span className="login-options" onClick={handleTranslate}>Ar</span>
+        <span className="login-options" onClick={handleTranslate}>
+          {locale}
+        </span>
         <span className="logo">{logo}</span>
         <span className="login-options" onClick={handleLogout}>{logout}</span>
       </div>

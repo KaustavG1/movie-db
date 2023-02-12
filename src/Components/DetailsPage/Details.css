@@ -52,15 +52,22 @@
   background-color: #696969;
 	text-align: center;
 	padding: 20px;
+  width: 400px;
+  height: 500px;
 	margin: 1rem;
+  padding-bottom: 0px;
 	box-shadow: 7px 10px 12px -5px rgba(0, 0, 0, 0.56);
 	border-radius: 10px;
   transition: all ease 500ms;
   color: #fff;
+  font-size: small;
+  box-sizing: border-box;
 }
 
 .movie-card img {
   border-radius: 10px;
+  max-height: 500px;
+  max-height: 400px;
 }
 
 .movie-card:hover {

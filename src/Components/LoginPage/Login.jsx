@@ -1,14 +1,24 @@
-import './Login.css'
+import { arabicContent, englishContent } from "../../constants/locale"
+import { nanoid } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
+import { userLogin } from '../../redux/authSlice'
 import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
 import { useState } from 'react'
+import "./Login.css"
 
-export default function Login({pageContent}) {
+export default function Login() {
+  const isArabic = useSelector(state => state.locale)
+  const pageContent = isArabic ? arabicContent : englishContent
+
   const {
     loginSign,
     emailPlaceholder,
     passwordPlaceholder,
     loginButton
   } = pageContent
+
+  const dispatch = useDispatch()
 
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -18,7 +28,12 @@ export default function Login({pageContent}) {
 
   const handleFormSubmit = event => {
     event.preventDefault()
-    navigate('/')
+    dispatch(userLogin({
+      id: nanoid(),
+      email,
+      password: pword
+    }))
+    navigate('/', { replace: true })
   }
 
   const validateEmail = value => {
@@ -47,7 +62,7 @@ export default function Login({pageContent}) {
     <div className="login-page">
       <div className="card">
         <h1 className="sign">{loginSign}</h1>
-        <form onSubmit={handleFormSubmit} className="login-form">
+        <form className="login-form">
           <input
             name="email"
             type="email"
@@ -68,6 +83,7 @@ export default function Login({pageContent}) {
             type="button"
             className="login-button"
             disabled={!(isEmailValid && isPassValid)}
+            onClick={handleFormSubmit}
           >
             {loginButton}
           </button>
